@@ -1,0 +1,51 @@
+.dropdownHeader {
+    display: flex;
+    align-content: flex-start;
+    border: 1px solid #6e6e6e;
+    padding: 2px 5px;
+}
+
+
+ul {
+    list-style-type: none;
+}
+
+.selectWrapper {
+    select {
+        padding: 8px;
+    }
+}
+
+///@at-root
+.selectWrapper {
+    position: relative;
+    width: 150px;
+    padding: 0;
+    margin: 0;
+}
+
+.selectedItem {
+    display: flex;
+    padding: 5px 8px;
+    border: 1px solid #6e6e6e;
+}
+
+.optionWrapper {
+    ul {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+
+        li {
+            padding-left: 8px;
+            display: flex;
+            border: 1px solid #6e6e6e;
+            padding: 5px 8px;
+            cursor: pointer;
+        }
+    }
+}

@@ -10,17 +10,25 @@ class Dropdown extends Component {
         super(props);
         this.state = {
             selected: null,
-            open: false
+            open: false,
+            clickedOutSide: false
         }
 
+        this.ref = React.createRef();
         this.onSelectClick = this.onSelectClick.bind(this);
         this.onSelectHandler = this.onSelectHandler.bind(this);
+        this.onClickOutside = this.onClickOutside.bind(this);
     }
 
-    //todo implement select outside
-
+    componentWillUnmount(){
+        document.removeEventListener("mousedown", this.onClickOutside);
+    }
+    
     onSelectHandler(value){
-        console.log("item selected: " + value);
+        const tempOpen = !this.state.open;
+        if(!tempOpen) {
+            document.removeEventListener("mousedown", this.onClickOutside);
+        }
 
         this.setState({
             selected: value,
@@ -48,9 +56,22 @@ class Dropdown extends Component {
         });
     }
 
+    onClickOutside(event){
+        //check that select is not the ref being clicked
+        //check that current target is not part of ref.current
+        if(!this.ref || !this.ref.current || this.ref.current.contains(event.target)){
+            return; //exit if its select event
+        }
+        this.setState({open: false});
+    }
+
     onSelectClick(event){
         event.preventDefault();
-        this.setState({open: !this.state.open});
+        const tempOpen = !this.state.open;
+        if(tempOpen) {
+            document.addEventListener("mousedown", this.onClickOutside);
+        }
+        this.setState({open:!this.state.open});
     }
 
     getSelectHtmlTemplate(){
@@ -75,7 +96,7 @@ class Dropdown extends Component {
     render(){
         const select = this.getCustomSelect();
         return (
-            <div className={styles.dropdown}>
+            <div ref={this.ref} className={styles.dropdown}>
                 <div className={styles.selectWrapper}>
                     {select}
                 </div>
